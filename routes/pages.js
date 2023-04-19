@@ -27,4 +27,8 @@ router.get("/register", function (req, res) {
   res.render("pages/auth/register", { title: "Register" });
 });
 
+router.get("/posts/add-post", function (req, res) {
+  res.render("pages/add-post", { title: "Add Post" });
+});
+
 module.exports = router;
