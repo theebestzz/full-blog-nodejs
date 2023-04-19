@@ -4,6 +4,7 @@ const express = require("express");
 const ejs = require("ejs");
 const path = require("path");
 const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
 
 const port = process.env.PORT || 8000;
 const uri = process.env.MONGODB_URI;
@@ -11,7 +12,12 @@ const uri = process.env.MONGODB_URI;
 // uygulamayı oluşturun
 const app = express();
 
-app.use(express.static("public"));
+// parse application/json
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+
+// statik klasör
+app.use(express.static("src/public"));
 
 // şablon dosyalarının bulunduğu klasörü belirtin
 app.set("views", path.join(__dirname, "src"));

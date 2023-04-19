@@ -31,4 +31,8 @@ router.get("/posts/add-post", function (req, res) {
   res.render("pages/add-post", { title: "Add Post" });
 });
 
+router.post("/posts/test", function (req, res) {
+  res.send("post ok");
+});
+
 module.exports = router;
