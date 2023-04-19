@@ -3,8 +3,10 @@ require("dotenv").config();
 const express = require("express");
 const ejs = require("ejs");
 const path = require("path");
+const mongoose = require("mongoose");
 
 const port = process.env.PORT || 8000;
+const uri = process.env.MONGODB_URI;
 
 // uygulamayı oluşturun
 const app = express();
@@ -17,31 +19,17 @@ app.set("views", path.join(__dirname, "src"));
 // kullanacağınız şablon motorunu belirtin
 app.set("view engine", "ejs");
 
-// kök dizindeki isteklere yanıt verin
-// EJS şablonunu kullanarak HTML sayfası oluşturun
-app.get("/", function (req, res) {
-  res.render("index", { title: "Home" });
-});
+// sayfa route işlemleri
+const pages = require("./routes/pages");
+app.use("/", pages);
 
-app.get("/about", function (req, res) {
-  res.render("pages/about", { title: "About" });
-});
-
-app.get("/blog", function (req, res) {
-  res.render("pages/blog", { title: "Blog" });
-});
-
-app.get("/contact", function (req, res) {
-  res.render("pages/contact", { title: "Contact" });
-});
-
-app.get("/login", function (req, res) {
-  res.render("pages/auth/login", { title: "Login" });
-});
-
-app.get("/register", function (req, res) {
-  res.render("pages/auth/register", { title: "Register" });
-});
+// veritabanı bağlantısı
+mongoose
+  .connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log("MongoDB veritabanına başarıyla bağlandı!"))
+  .catch((err) =>
+    console.error("MongoDB veritabanına bağlanırken hata oluştu:", err)
+  );
 
 // sunucuyu başlatın
 app.listen(port, function () {
